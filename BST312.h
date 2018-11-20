@@ -246,21 +246,29 @@ void BST_312 <ItemType>::deleteItem(const ItemType& newItem)
 
 }
 
+//This function deletes the entire BST
 template<class ItemType>
 void BST_312 <ItemType>::makeEmpty(TreeNode*& t)
 {
     //YOUR CODE GOES HERE
 
+    //If no BST,do nothing
     if(t == NULL){
         return;
     }
-
+    
+    //recursive call to delete all left subtrees
     makeEmpty(t->left);
+
+    //recursive call to delete all right subtrees
     makeEmpty(t->right);
+ 
+    //delete the node
     deleteNode(t);
 
 
 }
+//Post-condition:the entire BST is deleted
 
 template<class ItemType>
 void BST_312 <ItemType>::makeEmpty()
@@ -293,32 +301,37 @@ bool BST_312 <ItemType>::isFull() const
 
 }
 
-
+//This function inserts a unique item into the BST
 template<class ItemType>
 void BST_312 <ItemType>::insertItem(TreeNode*& t, const ItemType& newItem)
 {
 
     //YOUR CODE GOES HERE
 
+    //add the item if no BST
     if(t == NULL){
         t = new TreeNode();
         t->data = newItem;
         return;
     }
+    //if less than root,then go to left
     if(newItem < t->data){
         insertItem(t->left,newItem);
     }
+    //if bigger than root,then go to the right
     else{
         insertItem(t->right,newItem);
     }
 
 }
+//Post-condition:the item was successfully inserted into the BST
 
 template<class ItemType>
 void BST_312 <ItemType>::insertItem(const ItemType& newItem)
 {
     //YOUR CODE GOES HERE
 
+    //if the item is already in the BST or the BST is full,do NOT insert
     if(isItemInTree(newItem) || isFull()){
         return;
     }
@@ -328,24 +341,28 @@ void BST_312 <ItemType>::insertItem(const ItemType& newItem)
 }
 
 
-
+//this function counts the number of nodes in BST
 template<class ItemType>
 int BST_312 <ItemType>::countNodes(TreeNode* t) const
 {
     //YOUR CODE GOES HERE
 
+    //if root != NULL,then there is at least 1 node
     int totalNodes = 1;
 
+    //counts all left subtrees
     if(t->left != NULL){
         totalNodes = totalNodes + countNodes(t->left);
     }
+
+    //counts all the right subtrees
     if(t->right != NULL){
         totalNodes = totalNodes + countNodes(t->right);
     }
     return totalNodes;
 
 }
-
+//Post-condition:returns the number of nodes in the BST
 
 template<class ItemType>
 int BST_312 <ItemType>::countNodes()
@@ -355,6 +372,8 @@ int BST_312 <ItemType>::countNodes()
     TreeNode *ptr = root;
 
     int numNodes = 0;
+    
+    //check to see if BST is empty
     if(isEmpty()){
         return 0;
     }
@@ -365,6 +384,7 @@ int BST_312 <ItemType>::countNodes()
 
 }
 
+//This function uses a preOrderTraversal to print out the BST
 template<class ItemType>
 void BST_312 <ItemType>::preOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
@@ -376,7 +396,7 @@ void BST_312 <ItemType>::preOrderTraversal(TreeNode* t,vector<ItemType>& result)
         preOrderTraversal(t->right,result);
     }
 }
-
+//Post-condition:the result is placed into a vector with the algorithm Node,left,right
 
 template<class ItemType>
 vector<ItemType> BST_312 <ItemType>::preOrderTraversal()
@@ -394,6 +414,7 @@ vector<ItemType> BST_312 <ItemType>::preOrderTraversal()
 
 }
 
+//This function uses inOderTraversal to print out the BST
 template<class ItemType>
 void BST_312 <ItemType>::inOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
@@ -407,6 +428,7 @@ void BST_312 <ItemType>::inOrderTraversal(TreeNode* t,vector<ItemType>& result) 
 
 
 }
+//Post-condtion:the result is placed into a vector with the algorithm left,Node,right
 
 template<class ItemType>
 vector<ItemType> BST_312 <ItemType>::inOrderTraversal()
@@ -424,6 +446,7 @@ vector<ItemType> BST_312 <ItemType>::inOrderTraversal()
 
 }
 
+//this function uses postOrderTraversal to print out the BST
 template<class ItemType>
 void BST_312 <ItemType>::postOrderTraversal(TreeNode* t,vector<ItemType>& result) const
 {
@@ -435,6 +458,7 @@ void BST_312 <ItemType>::postOrderTraversal(TreeNode* t,vector<ItemType>& result
         result.push_back(t->data);
     }
 }
+//the result is placed into a vector with the algorithm left,right,Node
 
 template<class ItemType>
 vector<ItemType> BST_312 <ItemType>::postOrderTraversal()
@@ -451,15 +475,21 @@ vector<ItemType> BST_312 <ItemType>::postOrderTraversal()
     return answer;
 }
 
+//this is the helper function for isItemInTree
+//it returns true or false whether a specfic item is in the BST
 template<class ItemType>
 bool BST_312 <ItemType>::findItem(TreeNode* t, const ItemType& item){
 
+    //if the root is NULL,then the item can not 
+    //be in the BST
     if(t == NULL){
         return false;
     }
+    //if item is less than tree,go left
     else if(item < t->data){
         return findItem(t->left,item);
     }
+    //if item is bigger than tree,go right
     else if(t->data < item){
         return findItem(t->right,item);
     }
@@ -469,6 +499,7 @@ bool BST_312 <ItemType>::findItem(TreeNode* t, const ItemType& item){
 
 
 }
+//Post-condition:returns whether or not the item is in the BST
 
 template<class ItemType>
 bool BST_312 <ItemType>::isItemInTree(const ItemType& item)
